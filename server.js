@@ -6,16 +6,14 @@ var mongoose = require("mongoose");
 var cheerio = require("cheerio");
 var request = require("request");
 
-// Require Click schema
-var Click = require("./models/click");
 var Article = require("./models/Article.js");
 var Note = require("./models/Note.js");
 
 mongoose.Promise = Promise;
 
-// Create a new express app
+// Express
 var app = express();
-// Sets an initial port. We'll use this later in our listener
+// Port at 3000
 var PORT = process.env.PORT || 3000;
 
 // Run Morgan for Logging
@@ -36,8 +34,8 @@ if(process.env.MONGODB_URI) {
 }
 
 
-// MongoDB configuration (Change this URL to your own DB)
-//mongoose.connect("mongodb://admin:codingrocks@ds023674.mlab.com:23674/heroku_5ql1blnl");
+// MongoDB using nytsearch
+
 var db = mongoose.connection;
 
 db.on("error", function(err) {
@@ -54,22 +52,6 @@ db.once("open", function() {
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/public/index.html");
 });
-
-// This is the route we will send GET requests to retrieve our most recent click data.
-// We will call this route the moment our page gets rendered
-app.get("/api", function(req, res) {
-
-  // This GET request will search for the latest clickCount
-  Click.find({}).exec(function(err, doc) {
-
-    if (err) {
-      console.log(err);
-    }
-    else {
-      res.send(doc);
-    }
-  });
-})
 
 // From MongoScrape
 app.get("/scrape", function(req, res) {
@@ -96,7 +78,6 @@ app.get("/scrape", function(req, res) {
     res.send("Scrape Complete");
 });
 
-
 app.get("/articles", function(req, res) {
     Article.find({})
         .populate("note")
@@ -121,7 +102,6 @@ app.get("/articles/:id", function(req, res) {
         });
 });
 
-
 app.post("/articles/:id", function(req, res) {
     var newNote = new Note(req.body);
 
@@ -143,34 +123,6 @@ app.post("/articles/:id", function(req, res) {
 });
 // End from MongoScrape
 
-
-
-// This is the route we will send POST requests to save each click.
-// We will call this route the moment the "click" or "reset" button is pressed.
-app.post("/api", function(req, res) {
-
-  var clickID = req.body.clickID;
-  var clicks = parseInt(req.body.clicks);
-
-  // Note how this route utilizes the findOneAndUpdate function to update the clickCount
-  // { upsert: true } is an optional object we can pass into the findOneAndUpdate method
-  // If included, Mongoose will create a new document matching the description if one is not found
-  Click.findOneAndUpdate({
-    clickID: clickID
-  }, {
-    $set: {
-      clicks: clicks
-    }
-  }, { upsert: true }).exec(function(err) {
-
-    if (err) {
-      console.log(err);
-    }
-    else {
-      res.send("Updated Click Count!");
-    }
-  });
-});
 
 // -------------------------------------------------
 

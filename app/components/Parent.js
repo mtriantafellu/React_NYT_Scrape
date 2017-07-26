@@ -70,32 +70,13 @@ var Parent = React.createClass({
         <div className="row">
 
           <div className="jumbotron">
-            <h2>New York Times Search!</h2>
+            <h2>NPR Search using React!</h2>
             <hr />
             <p>
               <em>Using MongoDB as the backend</em>
-              Just visit <a href="/api">/api</a> to check out the DB!
             </p>
             <p>
-              {/*
-                Here we create a button click.
-                Note how we have an onClick event associate with our handleClick function.
-              */}
-              <button
-                className="btn btn-primary btn-lg"
-                type="button"
-                onClick={this.handleClick}
-              >
-                CLICK ME!!!!
-              </button>
-              {/* Here we create a button click for resetting the clickCounter */}
-              <button
-                className="btn btn-danger btn-lg"
-                type="button"
-                onClick={this.resetClick}
-              >
-                Reset
-              </button>
+
             </p>
           </div>
           {/* This represents the "Parent" */}
@@ -103,18 +84,20 @@ var Parent = React.createClass({
 
             <div className="panel panel-default">
               <div className="panel-heading">
-                <h3 className="panel-title text-center">Parent</h3>
+                <h3 className="panel-title text-center">Notes</h3>
               </div>
               <div className="panel-body text-center">
 
                 {/* This is where we'll show the click count for the parent */}
-                <h1>{this.state.clicks}</h1>
+                <h1>{this.state.Article}</h1>
+                <div id="articles"></div>
 
                 {/*
                   Here we'll deploy the child component.
                   We'll pass it the parent's click counter as a "state"
                 */}
-                <Child clicks={this.state.clicks} />
+                <Child clicks={this.state.Article} />
+
 
               </div>
             </div>
