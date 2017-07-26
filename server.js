@@ -27,6 +27,9 @@ app.use(express.static("public"));
 
 // -------------------------------------------------
 
+//mongodb://heroku_crbp6c96:b3bair98qb1438rc8bql941a55@ds125053.mlab.com:25053/heroku_crbp6c96
+
+
 if(process.env.MONGODB_URI) {
   mongoose.connect(process.env.MONGODB_URI);
 } else {
