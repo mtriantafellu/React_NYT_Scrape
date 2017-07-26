@@ -18,11 +18,10 @@ var Child = React.createClass({
         </div>
         <div className="panel-body text-center">
 
-          {/*
-            This component recieves a clicks variable as a prop from it's parent.
-            See line 64 of Parent.jsx
-          */}
           <h1>{this.state.number + 2 * this.props.clicks}</h1>
+            <div id="articles"></div>
+
+            <div id="notes"></div>
 
         </div>
       </div>
